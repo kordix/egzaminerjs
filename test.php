@@ -21,8 +21,7 @@
 
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <link rel="stylesheet" href="style.css">
 
@@ -56,13 +55,6 @@
           </ul>
 
           <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item " style="">
-              <select class="form-select" onchange="handleLanguageSelect(this)">
-                <option value="SP">Hiszpański</option>
-                <option value="DE">Niemiecki</option>
-              </select>
-            </li>
-
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,35 +85,32 @@
 
   </div>
 
-<div id="content"></div>
-
   <div class="container mt-4">
-      <p><b>Przetłumacz:</b> <span id="currentquestionquestion">{{currentQuestion.question}}</span></p>
-      <p>Counter:  <span id="currentquestioncounter"></span>  <span  style="font-size:8px">id: <span id="currentquestionid">{{currentQuestion.id}}</span> </span></p>
-      <!-- <label for="answer">Odpowiedź:</label> -->
-
-      <p id="komunikaty"> &nbsp</p>
-      <div>
+      <p><b>Przetłumacz:</b>{{currentQuestion.question}}</p>
+      <p>Counter: {{currentQuestion.counter}} <span style="font-size:8px">id: {{currentQuestion.id}}</span></p>
+      <label for="answer">Odpowiedź:</label>
+      <form action @submit="answerm">
         <div class="mb-3">
           <input style="width:250px" class="form-control" id="answerinput" type="text" v-model="answer" placeholder="odpowiedź" :disabled="disabledInput" autocomplete="off"/>
         </div>
         <div class="mb-3">
-          <button class="btn btn-primary" @click="answerm" id="answerbutton" onclick="handleAnswer(this)">answer</button>
+          <button class="btn btn-primary" @click="answerm" id="answerbutton">answer</button>
         </div>
 
         <div class="mb-3">
           <button type="button" class="btn btn-success" name="button" @click="plusCounter(1)" >Counter +1</button>
           <button type="button" class="btn btn-success" name="button" @click="plusCounter(5)" >Counter +5</button>
-          <button type="button" class="btn btn-danger" name="button" @click="plusCounter0">Zresetuj</button>
+          <button type="button" class="btn btn-success" name="button" @click="plusCounter0">Zresetuj</button>
         </div>
 
         <div class="mb-3">
-          <button id="nextbutton" type="button" class="btn btn-success" onclick="next()">Dalej</button>
+          <button id="nextbutton" type="button" class="btn btn-success" @click="next">Dalej</button>
           <button id="prevbutton" type="button" class="btn btn-secondary" @click="prev">Prev</button>
-          <button id="editbutton" type="button" class="btn btn-warning" style="margin-left:20px" @click="editbool=!editbool">Edytuj</button>
-          <button id="deletebutton" type="button" class="btn btn-danger" style="margin-left:20px" @click="deleteQuestion">Usuń</button>
+          <button id="editbutton" type="button" class="btn btn-secondary" style="margin-left:20px" @click="editbool=!editbool">Edytuj</button>
+          <button id="deletebutton" type="button" class="btn btn-danger" style="margin-left:20px" @click="deleteQuestion"
+          >Usuń</button>
         </div>
-  </div>
+      </form>
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
