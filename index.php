@@ -57,7 +57,7 @@
 
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item " style="">
-              <select class="form-select" onchange="handleLanguageSelect(this)">
+              <select class="form-select" id="languageinput" onchange="handleLanguageSelect(this)">
                 <option value="SP">Hiszpański</option>
                 <option value="DE">Niemiecki</option>
               </select>

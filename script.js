@@ -13,7 +13,7 @@ let settings = {
     sentences: 0,
     activelanguage: 'DE',
     currentcategory: 'wszystkie',
-    counterset: 2
+    counterset: 5
 }
 
 
@@ -45,7 +45,9 @@ async function loadData() {
     let self = this;
     // await axios.post("/public/api/read.php", { tabela: 'tags' }).then((res) => (tags = res.data));
     //  await axios.post("/public/api/read.php", { tabela: 'settings', id:1 }).then((res) =>{settings = res.data[0]; });
-    await axios.post('/public/api/all.php', { tabela: 'questions' }).then((res) => { wordsall = res.data });
+    // await axios.post('/public/api/all.php', { tabela: 'questions' }).then((res) => { wordsall = res.data });
+
+    await fetch('/public/api/all.php', {method:'POST', body:JSON.stringify({tabela:'questions'})}).then(res=>res.json()).then((res)=>wordsall = res)
 }
 
 function getWords() {
@@ -70,7 +72,7 @@ function getWords() {
 
 }
 
-function start(){
+function start() {
     if (this.randomset === 'true') {
         let count = this.words.length
         let num = Math.floor(Math.random() * count);
@@ -91,10 +93,10 @@ function runWord() {
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
 }
 
-function next(){
+function next() {
     document.getElementById('answerinput').value = '';
     currentQuestionIndex++;
-    if(currentQuestionIndex >= words.length){
+    if (currentQuestionIndex >= words.length) {
         currentQuestionIndex = 0;
     }
     currentQuestion = words[currentQuestionIndex];
@@ -134,13 +136,31 @@ function handleAnswer(event) {
 
 }
 
-function answerPositive(){
+function answerPositive() {
     document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.answer}</b> - prawidłowa odpowiedź`;
+    currentQuestion.counter++;
+    document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
+
+    // axios.post(`public/api/updateresult.php`, {
+    //     counter: currentQuestion.counter,
+    //     questionid: currentQuestion.id,
+    //     userid: 1
+    // });
+
+    let bodypost = {
+        counter: currentQuestion.counter,
+        questionid: currentQuestion.id,
+        userid: 1
+    };
+
+    
+
+    fetch(`public/api/updateresult.php`, {method:'POST',body: JSON.stringify(bodypost) })
 
 
 }
 
-function answerNegative(){
+function answerNegative() {
     console.log();
 
     document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.answer}</b>`;
@@ -151,6 +171,7 @@ function answerNegative(){
 loadData().then((res) => {
     getWords();
     start();
+    document.getElementById('languageinput').value = settings.activelanguage;
 });
 
 

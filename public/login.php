@@ -76,10 +76,6 @@ let app = new Vue({
             let self = this;
             try{
             axios.post('api/zaloguj.php',{login:this.login,password:this.password}).then((res)=>{
-                console.log(res.data.length);
-
-              
-
                 if(res.data.trim() == 'ZALOGOWANY'){
                     console.log('JOŁ JOŁ ZALOGOWANY');
                    location.reload();
