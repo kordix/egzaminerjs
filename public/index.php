@@ -1,88 +1,96 @@
 <?php
-session_start();
+// session_start();
 
-if(!isset($_SESSION['zalogowany'])){
-    header('Location: /login.php');
-}
+// if(!isset($_SESSION['zalogowany'])){
+//    // header('Location: /login.php');
+// }
 
-if($_SESSION['zalogowany']){
+// if($_SESSION['zalogowany']){
     
-}
+// }
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egzaminer noframework</title>
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        #wyloguj{
-            display:block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egzaminer js</title>
+
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    #wyloguj {
+      display: block;
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="app">
-<?php  include 'navbar.php' ?>
-    
-    <div  class="container" id="app">
-    <!-- <app></app> -->
+  <?php require 'views/navbar.php'; ?>
 
-<!-- <test></test> -->
-<!-- <crudcomp></crudcomp> -->
-<settings></settings>
-<tester></tester>
+  <div class="container mt-4">
+      <p><b>Przetłumacz:</b> <span id="currentquestionquestion"></span></p>
+      <p>Counter:  <span id="currentquestioncounter"></span>  <span  style="font-size:8px">id: <span id="currentquestionid"></span> </span></p>
+      <!-- <label for="answer">Odpowiedź:</label> -->
 
-<categoriser></categoriser>
+      <p id="komunikaty"> &nbsp</p>
+      <div>
+        <div class="mb-3">
+          <input style="width:250px" class="form-control" id="answerinput" type="text" v-model="answer" placeholder="odpowiedź" :disabled="disabledInput" autocomplete="off"/>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-primary" @click="answerm" id="answerbutton" onclick="handleAnswer(this)">answer</button>
+        </div>
 
+        <div class="mb-3">
+          <button type="button" class="btn btn-success" name="button" @click="plusCounter(1)" >Counter +1</button>
+          <button type="button" class="btn btn-success" name="button" @click="plusCounter(5)" >Counter +5</button>
+          <button type="button" class="btn btn-danger" name="button" @click="plusCounter0">Zresetuj</button>
+        </div>
 
-</div>
+        <div class="mb-3">
+          <button id="nextbutton" type="button" class="btn btn-success" onclick="next()">Dalej</button>
+          <button id="prevbutton" type="button" class="btn btn-secondary" onclick="prev()">Prev</button>
+          <button id="editbutton" type="button" class="btn btn-warning" style="margin-left:20px" @click="editbool=!editbool">Edytuj</button>
+          <button id="deletebutton" type="button" class="btn btn-danger" style="margin-left:20px" onclick="deleteQuestion()">Usuń</button>
+        </div>
 
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    
+        <div style="display:flex;align-items:center" id="collinsy" v-if="ready">
+          <a href="'" id="collinslink" target="_blank">
+            <div style="background-color:#333;width:100px;height:40px;margin:.3em;padding:5px" class="icon">
+              <img src="https://www.collinsdictionary.com/external/images/logo.png?version=4.0.35" class="img-fluid"/>
+            </div>
+          </a>
 
-<?php include('../components/crudcomp.php') ?>
-<?php include('../components/app.php') ?>
-<?php include('../components/test.php') ?>
-<?php include('../components/tester.php') ?>
-<?php include('../components/categoriser.php') ?>
-<?php include('../components/settings.php') ?>
-<?php include('../components/Add.php') ?>
+          <a :href="''+currentQuestion.answer" id="wiktionarylink" target="_blank">
+            <div style="height:60px;width:60px;margin:.3em" class="icon">
+              <img src="https://pl.wiktionary.org/static/images/project-logos/plwiktionary.png" class="img-fluid"/>
+            </div>
+          </a>
 
+          <a :href="'https://pl.wiktionary.org/wiki/'+currentQuestion.answer" id="bablalink"  target="_blank">
+            <div style="background:#333399;width:100px;height:40px;padding:5px" class="icon">
+              <img src="https://static.bab.la/img/babla-logo-white.svg" class="img-fluid" alt />
+            </div>
+          </a>
+        </div>
 
+  </div>
 
-
-
-   <script>
-   String.prototype.escapeDiacritics = function()
-    {
-        return this.replace(/ą/g, 'a').replace(/Ą/g, 'A')
-            .replace(/ć/g, 'c').replace(/Ć/g, 'C')
-            .replace(/ę/g, 'e').replace(/Ę/g, 'E')
-            .replace(/ł/g, 'l').replace(/Ł/g, 'L')
-            .replace(/ń/g, 'n').replace(/Ń/g, 'N')
-            .replace(/ó/g, 'o').replace(/Ó/g, 'O')
-            .replace(/ś/g, 's').replace(/Ś/g, 'S')
-            .replace(/ż/g, 'z').replace(/Ż/g, 'Z')
-            .replace(/ź/g, 'z').replace(/Ź/g, 'Z')
-            .replace(/ü/g, 'u').replace(/ú/g, 'u')
-            .replace(/ö/g, 'o').replace(/é/g,'e')
-            .replace(/ä/g, 'a').replace(/í/g,'i')
-            .replace(/á/g,'a').replace(/ö/g,'o')
-            .replace(/ß/g,'ss')
-            .replace(/ñ/g,'n')
-            ;
-    }
-   </script>
-
-<script src="script.js"></script>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/script.js"></script>
 
 </body>
+
 </html>

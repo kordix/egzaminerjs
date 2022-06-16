@@ -43,11 +43,13 @@ String.prototype.escapeDiacritics = function () {
 
 async function loadData() {
     let self = this;
-    // await axios.post("/public/api/read.php", { tabela: 'tags' }).then((res) => (tags = res.data));
-    //  await axios.post("/public/api/read.php", { tabela: 'settings', id:1 }).then((res) =>{settings = res.data[0]; });
-    // await axios.post('/public/api/all.php', { tabela: 'questions' }).then((res) => { wordsall = res.data });
+    // await axios.post("/api/read.php", { tabela: 'tags' }).then((res) => (tags = res.data));
+    //  await axios.post("/api/read.php", { tabela: 'settings', id:1 }).then((res) =>{settings = res.data[0]; });
+    // await axios.post('/api/all.php', { tabela: 'questions' }).then((res) => { wordsall = res.data });
 
-    await fetch('/public/api/all.php', {method:'POST', body:JSON.stringify({tabela:'questions'})}).then(res=>res.json()).then((res)=>wordsall = res)
+    await fetch('/api/settings.php', { method: 'POST', body: JSON.stringify({ tabela: 'settings' }) }).then(res => res.json()).then((res) => settings = res[0])
+    await fetch('/api/all.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions' }) }).then(res => res.json()).then((res) => wordsall = res)
+
 }
 
 function getWords() {
@@ -56,6 +58,8 @@ function getWords() {
     }
 
     wordsall = wordsall.filter((el) => el.language == settings.activelanguage);
+
+    console.log(words);
     words = wordsall.filter((el) => el.sentence == settings.sentences);
     words = words.filter((el) => el.counter < settings.counterset);
     if (words.length < 1) { console.log('skończyły się słówka'); errors.push('Skończyły się słówka - zmień counter, kategorię albo dodaj nowe'); return };
@@ -91,6 +95,13 @@ function runWord() {
     document.getElementById('currentquestionquestion').innerHTML = currentQuestion.question;
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
+    document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer}`;
+    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer}`;
+    document.getElementById('bablalink').href = `https://pl.bab.la/slownik/niemiecki-polski/${currentQuestion.answer}`;
+
+
+    
+
 }
 
 function next() {
@@ -98,6 +109,23 @@ function next() {
     currentQuestionIndex++;
     if (currentQuestionIndex >= words.length) {
         currentQuestionIndex = 0;
+    }
+    currentQuestion = words[currentQuestionIndex];
+    runWord();
+}
+
+function deleteQuestion() {
+    let cruddata = {tabela:'questions', id:currentQuestion.id}
+    fetch('/api/delete.php', {method:'POST',body:JSON.stringify(cruddata)}).then((res)=>console.log(res))
+    console.log('delete');
+    this.next();
+}
+
+function prev() {
+    document.getElementById('answerinput').value = '';
+    currentQuestionIndex--;
+    if (currentQuestionIndex < 0) {
+        currentQuestionIndex = words.length - 1;
     }
     currentQuestion = words[currentQuestionIndex];
     runWord();
@@ -140,31 +168,16 @@ function answerPositive() {
     document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.answer}</b> - prawidłowa odpowiedź`;
     currentQuestion.counter++;
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
-
-    // axios.post(`public/api/updateresult.php`, {
-    //     counter: currentQuestion.counter,
-    //     questionid: currentQuestion.id,
-    //     userid: 1
-    // });
-
     let bodypost = {
         counter: currentQuestion.counter,
         questionid: currentQuestion.id,
         userid: 1
     };
-
-    
-
-    fetch(`public/api/updateresult.php`, {method:'POST',body: JSON.stringify(bodypost) })
-
-
+    fetch(`/api/updateresult.php`, { method: 'POST', body: JSON.stringify(bodypost) })
 }
 
 function answerNegative() {
-    console.log();
-
     document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.answer}</b>`;
-
 }
 
 
@@ -173,6 +186,5 @@ loadData().then((res) => {
     start();
     document.getElementById('languageinput').value = settings.activelanguage;
 });
-
 
 
