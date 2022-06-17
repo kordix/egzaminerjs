@@ -5,6 +5,7 @@ let errors = [];
 let randomset = false;
 let currentQuestion = {};
 let currentQuestionIndex = 0;
+let crudadd = {};
 
 
 let answer = '';
@@ -86,10 +87,12 @@ function start() {
 
     document.getElementById('counterinput').value = settings.counterset;
 
-    if(settings.sentences == 1){
+    if (settings.sentences == 1) {
         document.getElementById('senctencesselect').selectedIndex = 1;
     }
- 
+
+    document.querySelector('#answerinput').focus();
+
 
 
 }
@@ -104,7 +107,7 @@ function runWord() {
     document.getElementById('bablalink').href = `https://pl.bab.la/slownik/niemiecki-polski/${currentQuestion.answer}`;
 
 
-    
+
 
 }
 
@@ -112,15 +115,17 @@ function next() {
     document.getElementById('answerinput').value = '';
     currentQuestionIndex++;
     if (currentQuestionIndex >= words.length) {
+        location.reload();
         currentQuestionIndex = 0;
     }
     currentQuestion = words[currentQuestionIndex];
     runWord();
+    document.querySelector('#answerinput').focus();
 }
 
 function deleteQuestion() {
-    let cruddata = {tabela:'questions', id:currentQuestion.id}
-    fetch('/api/delete.php', {method:'POST',body:JSON.stringify(cruddata)}).then((res)=>console.log(res))
+    let cruddata = { tabela: 'questions', id: currentQuestion.id }
+    fetch('/api/delete.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
     console.log('delete');
     this.next();
 }
@@ -135,7 +140,7 @@ function prev() {
     runWord();
 }
 
-function saveCounterset(){
+function saveCounterset() {
     settings.counterset = document.getElementById('counterinput').value;
     saveSettings();
 }
@@ -145,15 +150,15 @@ function handleLanguageSelect(event) {
     saveSettings();
 }
 
-function saveSettings(){
+function saveSettings() {
     var partofspeechselect = document.getElementById('senctencesselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
     console.log(partofspeechselect);
     console.log(partofspeechselect.selectedIndex);
 
     settings.sentences = partofspeechselectvalue;
-    let cruddata = {tabela:'settings', dane:settings}
-    fetch('/api/savesettings.php', {method:'POST',body:JSON.stringify(cruddata)}).then((res)=>console.log(res))
+    let cruddata = { tabela: 'settings', dane: settings }
+    fetch('/api/savesettings.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
     location.reload()
 }
 
@@ -161,41 +166,47 @@ function handleAnswer(event) {
 
     answer = document.getElementById('answerinput').value;
 
-    if (currentQuestion.rodzajnik && 1 == 0) {
-        if (
-            answer.escapeDiacritics().toLowerCase() ==
-            currentQuestion.rodzajnik +
-            " " +
-            currentQuestion.answer.escapeDiacritics().toLowerCase() &&
-            answer != ""
-        ) {
-            answerPositive();
-        } else {
-            answerNegative();
-        }
-    } else {
-        if (
-            answer.escapeDiacritics().toLowerCase() ==
-            currentQuestion.answer.escapeDiacritics().toLowerCase()
-        ) {
-            answerPositive();
-        } else {
-            answerNegative();
+    let answers = currentQuestion.answer.split(' / ');
+    let passed = 0;
+    console.log(answers);
+
+    for (let i = 0; i < answers.length; i++) {
+        let elem = answers[i];
+        console.log(elem);
+
+        console.log(answers[i].escapeDiacritics().toLowerCase());
+        console.log(currentQuestion.answer.escapeDiacritics().toLowerCase());
+        // console.log(escapeDiacritics().toLowerCase() == currentQuestion.answer.escapeDiacritics().toLowerCase());
+
+        console.log(typeof(answer));
+        console.log(typeof(answers[i]));
+
+        if (answer.escapeDiacritics().toLowerCase() == answers[i].escapeDiacritics().toLowerCase()) {
+            passed = 1;
         }
     }
+
+    if(passed){
+        answerPositive();
+    }else{
+        answerNegative();
+    }
+
+    document.getElementById('nextbutton').focus();
+
 
 }
 
 function answerPositive() {
-    document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.answer}</b> - prawidłowa odpowiedź`;
+    document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b> - prawidłowa odpowiedź!`;
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     updatecounter(1);
-  
+
 }
 
-function updatecounter(ile,nextt){
+function updatecounter(ile, nextt) {
     currentQuestion.counter += ile;
-    if(ile == 0){
+    if (ile == 0) {
         currentQuestion.counter = 0;
     }
 
@@ -206,14 +217,83 @@ function updatecounter(ile,nextt){
     };
     fetch(`/api/updateresult.php`, { method: 'POST', body: JSON.stringify(bodypost) })
 
-    if(nextt){
+    if (nextt) {
         next();
     }
 }
 
 function answerNegative() {
-    document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.answer}</b>`;
+    document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b>`;
 }
+
+
+function add(){
+    console.log('fasdfdadffsd');
+    var partofspeechselect = document.getElementById('partofspeechselect');
+    var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
+
+    let sentence = 0;
+    if(parseInt(document.getElementById('sentencecheckbox').checked == 1)){
+        sentence = 1;
+    }
+
+    let crudadd = {
+        sentence: sentence,
+        question: document.getElementById('questioninput').value,
+        answer: document.getElementById('answerinput').value ,
+        rodzajnik:'', 
+        tags:'nieprzypisane',
+        partofspeech:partofspeechselectvalue
+    }
+
+    fetch('/api/add.php',{method:'POST',body:JSON.stringify({tabela:'questions',dane:crudadd}) }).then((res)=>console.log('poszło'))
+    document.getElementById('messages').innerHTML = `Dodano pytanie ${crudadd.question}`;
+
+}
+
+function edytuj(){
+    document.querySelector('#questioninput').value = currentQuestion.question;
+    document.querySelector('#crudanswerinput').value = currentQuestion.answer;
+    document.querySelector('#addheader').innerHTML = 'Edytuj pytanie';
+    document.querySelector('#savebutton').style.display = 'none';
+    document.querySelector('#updatebutton').style.display = 'inline-block';
+
+
+}
+
+
+function updateQuestion(){
+    
+
+
+    var partofspeechselect = document.getElementById('partofspeechselect');
+    var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
+
+    let sentence = 0;
+    if(parseInt(document.getElementById('sentencecheckbox').checked == 1)){
+        sentence = 1;
+    }
+
+    let crudadd = {
+        sentence: sentence,
+        question: document.getElementById('questioninput').value,
+        answer: document.getElementById('crudanswerinput').value ,
+        rodzajnik:'', 
+        tags:'nieprzypisane',
+        partofspeech:partofspeechselectvalue
+    }
+
+    fetch('/api/update.php',{method:'POST',body:JSON.stringify({tabela:'questions',dane:crudadd,id:currentQuestion.id}) }).then((res)=>console.log('poszło'))
+    document.getElementById('messages').innerHTML = `Zedytowano pytanie ${crudadd.question}`;
+
+
+}
+
+function handleRodzajnikSelect(event){
+    crudadd.rodzajnik = event.value;
+}
+
+
 
 
 loadData().then((res) => {
@@ -222,4 +302,9 @@ loadData().then((res) => {
     document.getElementById('languageinput').value = settings.activelanguage;
 });
 
+document.querySelector('#answerinput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      document.querySelector('#answerbutton').click()
+    }
+});
 

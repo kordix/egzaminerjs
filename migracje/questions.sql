@@ -8,8 +8,8 @@ CREATE TABLE `questions` (
   `rodzajnik` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `fav` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `level` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `counter` int(11) NOT NULL DEFAULT '0',
-  `sentence` bit NOT NULL DEFAULT '0',
+  `counter` int(11) NOT NULL DEFAULT 0,
+  `sentence` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

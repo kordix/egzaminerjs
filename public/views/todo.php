@@ -32,7 +32,6 @@ if (!isset($_SESSION['zalogowany'])) {
 
     <div class="container pt-3">
         <ul>
-            <li>zdania</li>
             <li>wygodne dodawanie tagów</li>
             <li>duplikaty</li>
             <li>synonimy beunruhigen änstigen</li>
@@ -42,6 +41,7 @@ if (!isset($_SESSION['zalogowany'])) {
             <li>losowe</li>
             <li>statystyki</li>
             <li>SP-PL PL-SP</li>
+            <li></li>
         </ul>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
