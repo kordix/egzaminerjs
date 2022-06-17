@@ -35,6 +35,7 @@ CREATE TABLE `settings` (
   `operator` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '<',
   `currentcategory` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `currenttag` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tryb` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'POLDE',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,8 +44,8 @@ CREATE TABLE `settings` (
 -- Zrzut danych tabeli `settings`
 --
 
-INSERT INTO `settings` (`id`, `user_id`, `activelanguage`, `counterset`, `operator`, `currentcategory`, `currenttag`, `created_at`, `updated_at`) VALUES
-(1, 1, 'DE', 5,0, '<', 'nieprzypisane', '', '2020-07-31 14:52:24', '2021-06-13 10:56:24');
+INSERT INTO `settings` (`id`, `user_id`, `activelanguage`, `counterset`,`sentences`, `operator`, `currentcategory`, `currenttag`,`tryb`, `created_at`, `updated_at`) VALUES
+(1, 1, 'DE', 5, 0, '<', 'wszystkie', '','POLDE','2020-07-31 14:52:24', '2021-06-13 10:56:24');
 
 
 --

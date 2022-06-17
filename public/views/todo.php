@@ -33,8 +33,6 @@ if (!isset($_SESSION['zalogowany'])) {
     <div class="container pt-3">
         <ul>
             <li>wygodne dodawanie tagów</li>
-            <li>duplikaty</li>
-            <li>synonimy beunruhigen änstigen</li>
             <li>tryb auto</li>
             <li>opcjonalne rodzajniki</li>
             <li>podobne, alfabetycznie</li>

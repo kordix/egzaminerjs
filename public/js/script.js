@@ -99,7 +99,14 @@ function start() {
 
 function runWord() {
     document.getElementById('komunikaty').innerHTML = '&nbsp';
-    document.getElementById('currentquestionquestion').innerHTML = currentQuestion.question;
+
+    if (settings.tryb == 'POLDE') {
+        document.getElementById('currentquestionquestion').innerHTML = currentQuestion.question;
+    }
+
+    if (settings.tryb == 'DEPOL') {
+        document.getElementById('currentquestionquestion').innerHTML = currentQuestion.answer;
+    }
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
     document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer}`;
@@ -166,29 +173,31 @@ function handleAnswer(event) {
 
     answer = document.getElementById('answerinput').value;
 
+
+
     let answers = currentQuestion.answer.split(' / ');
+    if (settings.tryb == 'DEPOL') {
+        answers = currentQuestion.question.split(' / ');
+    }
     let passed = 0;
-    console.log(answers);
+
 
     for (let i = 0; i < answers.length; i++) {
         let elem = answers[i];
-        console.log(elem);
 
-        console.log(answers[i].escapeDiacritics().toLowerCase());
-        console.log(currentQuestion.answer.escapeDiacritics().toLowerCase());
-        // console.log(escapeDiacritics().toLowerCase() == currentQuestion.answer.escapeDiacritics().toLowerCase());
-
-        console.log(typeof(answer));
-        console.log(typeof(answers[i]));
 
         if (answer.escapeDiacritics().toLowerCase() == answers[i].escapeDiacritics().toLowerCase()) {
             passed = 1;
         }
     }
 
-    if(passed){
+    console.log('answerinput', answer.escapeDiacritics().toLowerCase());
+
+    console.log('answers[0]', answers[0].escapeDiacritics().toLowerCase());
+
+    if (passed) {
         answerPositive();
-    }else{
+    } else {
         answerNegative();
     }
 
@@ -199,6 +208,10 @@ function handleAnswer(event) {
 
 function answerPositive() {
     document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b> - prawidłowa odpowiedź!`;
+    if (settings.tryb == 'DEPOL') {
+        document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.question }</b> - prawidłowa odpowiedź!`;
+    }
+
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     updatecounter(1);
 
@@ -223,35 +236,41 @@ function updatecounter(ile, nextt) {
 }
 
 function answerNegative() {
-    document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b>`;
+    if (settings.tryb == 'POLDE') {
+        document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b>`;
+    }
+
+    if (settings.tryb == 'DEPOL') {
+        document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.rodzajnik} ${currentQuestion.question}</b>`;
+    }
 }
 
 
-function add(){
+function add() {
     console.log('fasdfdadffsd');
     var partofspeechselect = document.getElementById('partofspeechselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
     let sentence = 0;
-    if(parseInt(document.getElementById('sentencecheckbox').checked == 1)){
+    if (parseInt(document.getElementById('sentencecheckbox').checked == 1)) {
         sentence = 1;
     }
 
     let crudadd = {
         sentence: sentence,
         question: document.getElementById('questioninput').value,
-        answer: document.getElementById('answerinput').value ,
-        rodzajnik:'', 
-        tags:'nieprzypisane',
-        partofspeech:partofspeechselectvalue
+        answer: document.getElementById('crudanswerinput').value,
+        rodzajnik: '',
+        tags: 'nieprzypisane',
+        partofspeech: partofspeechselectvalue
     }
 
-    fetch('/api/add.php',{method:'POST',body:JSON.stringify({tabela:'questions',dane:crudadd}) }).then((res)=>console.log('poszło'))
+    fetch('/api/add.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions', dane: crudadd }) }).then((res) => console.log('poszło'))
     document.getElementById('messages').innerHTML = `Dodano pytanie ${crudadd.question}`;
 
 }
 
-function edytuj(){
+function edytuj() {
     document.querySelector('#questioninput').value = currentQuestion.question;
     document.querySelector('#crudanswerinput').value = currentQuestion.answer;
     document.querySelector('#addheader').innerHTML = 'Edytuj pytanie';
@@ -262,34 +281,34 @@ function edytuj(){
 }
 
 
-function updateQuestion(){
-    
+function updateQuestion() {
+
 
 
     var partofspeechselect = document.getElementById('partofspeechselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
     let sentence = 0;
-    if(parseInt(document.getElementById('sentencecheckbox').checked == 1)){
+    if (parseInt(document.getElementById('sentencecheckbox').checked == 1)) {
         sentence = 1;
     }
 
     let crudadd = {
         sentence: sentence,
         question: document.getElementById('questioninput').value,
-        answer: document.getElementById('crudanswerinput').value ,
-        rodzajnik:'', 
-        tags:'nieprzypisane',
-        partofspeech:partofspeechselectvalue
+        answer: document.getElementById('crudanswerinput').value,
+        rodzajnik: '',
+        tags: 'nieprzypisane',
+        partofspeech: partofspeechselectvalue
     }
 
-    fetch('/api/update.php',{method:'POST',body:JSON.stringify({tabela:'questions',dane:crudadd,id:currentQuestion.id}) }).then((res)=>console.log('poszło'))
+    fetch('/api/update.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions', dane: crudadd, id: currentQuestion.id }) }).then((res) => console.log('poszło'))
     document.getElementById('messages').innerHTML = `Zedytowano pytanie ${crudadd.question}`;
 
 
 }
 
-function handleRodzajnikSelect(event){
+function handleRodzajnikSelect(event) {
     crudadd.rodzajnik = event.value;
 }
 
@@ -304,7 +323,7 @@ loadData().then((res) => {
 
 document.querySelector('#answerinput').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
-      document.querySelector('#answerbutton').click()
+        document.querySelector('#answerbutton').click()
     }
 });
 

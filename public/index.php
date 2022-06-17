@@ -92,6 +92,8 @@
             </select>
             <input style="width:50px" type="number" id="counterinput">
             <button type="button" name="button" onclick="saveCounterset()">Ustaw</button>
+
+          
         </div> 
 
         <div class="mb-2">
@@ -100,6 +102,14 @@
             <option value="0">Słowa</option>
             <option value="1">Zdania</option>
           </select>
+        </div>
+
+        <div class="mb-2">
+          <label for="tryb">Tryb</label>
+          <select name="" id="tryb">
+              <option value="POLDE">Polski - obcy</option>
+              <option value="DEPOL">Obcy - polski</option>
+            </select>
         </div>
 
       <div>
