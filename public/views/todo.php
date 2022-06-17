@@ -38,7 +38,6 @@ if (!isset($_SESSION['zalogowany'])) {
             <li>podobne, alfabetycznie</li>
             <li>losowe</li>
             <li>statystyki</li>
-            <li>SP-PL PL-SP</li>
             <li></li>
         </ul>
     </div>

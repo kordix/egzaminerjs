@@ -109,9 +109,9 @@ function runWord() {
     }
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
-    document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer}`;
-    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer}`;
-    document.getElementById('bablalink').href = `https://pl.bab.la/slownik/niemiecki-polski/${currentQuestion.answer}`;
+    document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer.split(' / ')[0]}`;
+    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer.split(' / ')[0]}`;
+    document.getElementById('bablalink').href = `https://pl.bab.la/slownik/niemiecki-polski/${currentQuestion.answer.split(' / ')[0]}`;
 
 
 
