@@ -7,7 +7,7 @@ function add(){
 
 
     let crudadd = {
-        sentence:0,
+        sentence: document.getElementById('sentencecheckbox').checked ? 1 : 0,
         question: document.getElementById('questioninput').value,
         answer: document.getElementById('answerinput').value ,
         rodzajnik:'', 

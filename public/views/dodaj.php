@@ -71,7 +71,7 @@ if (!isset($_SESSION['zalogowany'])) {
                 </div>
                 <div>
                     <label for="">Zdanie:</label>
-                    <input type="checkbox" v-model="sentence">
+                    <input type="checkbox" id="sentencecheckbox">
                 </div>
 
                 <button type="button" name="button" class="btn btn-primary" onclick="add()">Zatwierdź</button>

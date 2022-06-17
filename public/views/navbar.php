@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
       <div class="container">
-        <a class="navbar-brand" href="#">Egzaminer JS Bootstrap 5</a>
+        <a class="navbar-brand" href="/">Egzaminer JS Bootstrap 5</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -14,7 +14,7 @@
               <a class="nav-link" aria-current="page" href="/views/dodaj.php">Dodawanie</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/views/settings.php">Ustawienia</a>
+              <a class="nav-link" aria-current="page" href="/views/todo.php">Todo</a>
             </li>
           </ul>
 
@@ -35,9 +35,7 @@
                 <li><a class="dropdown-item" href="#">Wyloguj</a></li>
               </ul>
             </li>
-            <li class="nav-item">
-
-            </li>
+         
           </ul>
         </div>
       </div>

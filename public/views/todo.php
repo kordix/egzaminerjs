@@ -30,15 +30,19 @@ if (!isset($_SESSION['zalogowany'])) {
   <div>
     <?php  include 'navbar.php' ?>
 
-    <div class="container">
-      <p id="messages"></p>
-
-      
-
-     
-
-
-
+    <div class="container pt-3">
+        <ul>
+            <li>zdania</li>
+            <li>wygodne dodawanie tagów</li>
+            <li>duplikaty</li>
+            <li>synonimy beunruhigen änstigen</li>
+            <li>tryb auto</li>
+            <li>opcjonalne rodzajniki</li>
+            <li>podobne, alfabetycznie</li>
+            <li>losowe</li>
+            <li>statystyki</li>
+            <li>SP-PL PL-SP</li>
+        </ul>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

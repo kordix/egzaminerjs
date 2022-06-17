@@ -16,10 +16,7 @@ let settings = {
     counterset: 5
 }
 
-
 let siemano = 'fdsfdasdafsd';
-
-
 
 String.prototype.escapeDiacritics = function () {
     return this.replace(/ą/g, 'a').replace(/Ą/g, 'A')
@@ -40,7 +37,6 @@ String.prototype.escapeDiacritics = function () {
         ;
 }
 
-
 async function loadData() {
     let self = this;
     // await axios.post("/api/read.php", { tabela: 'tags' }).then((res) => (tags = res.data));
@@ -59,7 +55,6 @@ function getWords() {
 
     wordsall = wordsall.filter((el) => el.language == settings.activelanguage);
 
-    console.log(words);
     words = wordsall.filter((el) => el.sentence == settings.sentences);
     words = words.filter((el) => el.counter < settings.counterset);
     if (words.length < 1) { console.log('skończyły się słówka'); errors.push('Skończyły się słówka - zmień counter, kategorię albo dodaj nowe'); return };
@@ -88,6 +83,15 @@ function start() {
     }
 
     runWord();
+
+    document.getElementById('counterinput').value = settings.counterset;
+
+    if(settings.sentences == 1){
+        document.getElementById('senctencesselect').selectedIndex = 1;
+    }
+ 
+
+
 }
 
 function runWord() {
@@ -131,8 +135,26 @@ function prev() {
     runWord();
 }
 
+function saveCounterset(){
+    settings.counterset = document.getElementById('counterinput').value;
+    saveSettings();
+}
+
 function handleLanguageSelect(event) {
     settings.activelanguage = event.value;
+    saveSettings();
+}
+
+function saveSettings(){
+    var partofspeechselect = document.getElementById('senctencesselect');
+    var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
+    console.log(partofspeechselect);
+    console.log(partofspeechselect.selectedIndex);
+
+    settings.sentences = partofspeechselectvalue;
+    let cruddata = {tabela:'settings', dane:settings}
+    fetch('/api/savesettings.php', {method:'POST',body:JSON.stringify(cruddata)}).then((res)=>console.log(res))
+    location.reload()
 }
 
 function handleAnswer(event) {
@@ -166,14 +188,27 @@ function handleAnswer(event) {
 
 function answerPositive() {
     document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.answer}</b> - prawidłowa odpowiedź`;
-    currentQuestion.counter++;
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
+    updatecounter(1);
+  
+}
+
+function updatecounter(ile,nextt){
+    currentQuestion.counter += ile;
+    if(ile == 0){
+        currentQuestion.counter = 0;
+    }
+
     let bodypost = {
         counter: currentQuestion.counter,
         questionid: currentQuestion.id,
         userid: 1
     };
     fetch(`/api/updateresult.php`, { method: 'POST', body: JSON.stringify(bodypost) })
+
+    if(nextt){
+        next();
+    }
 }
 
 function answerNegative() {

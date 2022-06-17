@@ -52,9 +52,9 @@
         </div>
 
         <div class="mb-3">
-          <button type="button" class="btn btn-success" name="button" @click="plusCounter(1)" >Counter +1</button>
-          <button type="button" class="btn btn-success" name="button" @click="plusCounter(5)" >Counter +5</button>
-          <button type="button" class="btn btn-danger" name="button" @click="plusCounter0">Zresetuj</button>
+          <button type="button" class="btn btn-success" onclick="updatecounter(1,true)" >Counter +1</button>
+          <button type="button" class="btn btn-success"  onclick="updatecounter(5,true)" >Counter +5</button>
+          <button type="button" class="btn btn-danger"  onclick="updatecounter(0,true)">Zresetuj</button>
         </div>
 
         <div class="mb-3">
@@ -83,6 +83,26 @@
             </div>
           </a>
         </div>
+        <hr>
+        <div class="mb-2">
+            <span style="margin-bottom:0px;line-height:2rem;">Counterset:</span>
+            <select class="mr-1" id="operatorselect">
+              <option value="<"> < </option>
+              <option value=">"> > </option>
+            </select>
+            <input style="width:50px" type="number" id="counterinput">
+            <button type="button" name="button" onclick="saveCounterset()">Ustaw</button>
+        </div> 
+
+        <div class="mb-2">
+          <label for="">Rodzaj materiału:</label>
+          <select name="" id="senctencesselect" onchange="saveSettings()">
+            <option value="0">Słowa</option>
+            <option value="1">Zdania</option>
+          </select>
+        </div>
+      
+          <!-- <p style="margin-right:20px">Random: <input type="checkbox" v-model="randomset"></p> -->
 
   </div>
 
