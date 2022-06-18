@@ -38,7 +38,7 @@ if (!isset($_SESSION['zalogowany'])) {
             <li>podobne, alfabetycznie</li>
             <li>losowe</li>
             <li>statystyki</li>
-            <li></li>
+            <li>Lista</li>
         </ul>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>

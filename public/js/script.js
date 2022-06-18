@@ -45,7 +45,7 @@ async function loadData() {
     // await axios.post('/api/all.php', { tabela: 'questions' }).then((res) => { wordsall = res.data });
 
     await fetch('/api/settings.php', { method: 'POST', body: JSON.stringify({ tabela: 'settings' }) }).then(res => res.json()).then((res) => settings = res[0])
-    await fetch('/api/all.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions' }) }).then(res => res.json()).then((res) => wordsall = res)
+    await fetch('/api/all.php', { method: 'POST', bfody: JSON.stringify({ tabela: 'questions' }) }).then(res => res.json()).then((res) => wordsall = res)
 
 }
 
@@ -91,6 +91,10 @@ function start() {
         document.getElementById('senctencesselect').selectedIndex = 1;
     }
 
+    if (settings.tryb == 'DEPOL') {
+        document.getElementById('tryb').selectedIndex = 1;
+    }
+
     document.querySelector('#answerinput').focus();
 
 
@@ -98,7 +102,11 @@ function start() {
 }
 
 function runWord() {
-    document.getElementById('komunikaty').innerHTML = '&nbsp';
+    if (document.getElementById('komunikaty')) {
+        document.getElementById('komunikaty').innerHTML = '&nbsp';
+    }else{
+        return;
+    }
 
     if (settings.tryb == 'POLDE') {
         document.getElementById('currentquestionquestion').innerHTML = currentQuestion.question;
@@ -158,12 +166,10 @@ function handleLanguageSelect(event) {
 }
 
 function saveSettings() {
-    var partofspeechselect = document.getElementById('senctencesselect');
-    var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
-    console.log(partofspeechselect);
-    console.log(partofspeechselect.selectedIndex);
+    var senctencesselect = document.getElementById('senctencesselect');
+    var senctencesselectvalue = senctencesselect.options[partofspeechselect.selectedIndex].value;
 
-    settings.sentences = partofspeechselectvalue;
+    settings.sentences = senctencesselectvalue;
     let cruddata = { tabela: 'settings', dane: settings }
     fetch('/api/savesettings.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
     location.reload()
@@ -172,9 +178,6 @@ function saveSettings() {
 function handleAnswer(event) {
 
     answer = document.getElementById('answerinput').value;
-
-
-
     let answers = currentQuestion.answer.split(' / ');
     if (settings.tryb == 'DEPOL') {
         answers = currentQuestion.question.split(' / ');
@@ -185,15 +188,11 @@ function handleAnswer(event) {
     for (let i = 0; i < answers.length; i++) {
         let elem = answers[i];
 
-
         if (answer.escapeDiacritics().toLowerCase() == answers[i].escapeDiacritics().toLowerCase()) {
             passed = 1;
         }
     }
 
-    console.log('answerinput', answer.escapeDiacritics().toLowerCase());
-
-    console.log('answers[0]', answers[0].escapeDiacritics().toLowerCase());
 
     if (passed) {
         answerPositive();
@@ -209,7 +208,7 @@ function handleAnswer(event) {
 function answerPositive() {
     document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b> - prawidłowa odpowiedź!`;
     if (settings.tryb == 'DEPOL') {
-        document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.question }</b> - prawidłowa odpowiedź!`;
+        document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.question}</b> - prawidłowa odpowiedź!`;
     }
 
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
@@ -247,7 +246,6 @@ function answerNegative() {
 
 
 function add() {
-    console.log('fasdfdadffsd');
     var partofspeechselect = document.getElementById('partofspeechselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
@@ -257,6 +255,7 @@ function add() {
     }
 
     let crudadd = {
+        language:settings.activelanguage,
         sentence: sentence,
         question: document.getElementById('questioninput').value,
         answer: document.getElementById('crudanswerinput').value,
@@ -282,9 +281,6 @@ function edytuj() {
 
 
 function updateQuestion() {
-
-
-
     var partofspeechselect = document.getElementById('partofspeechselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
@@ -319,11 +315,31 @@ loadData().then((res) => {
     getWords();
     start();
     document.getElementById('languageinput').value = settings.activelanguage;
+
+
 });
 
-document.querySelector('#answerinput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        document.querySelector('#answerbutton').click()
-    }
-});
+if (document.querySelector('#answerinput')) {
+    document.querySelector('#answerinput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            document.querySelector('#answerbutton').click()
+        }
+    });
+}
+
+
+
+let speech = new SpeechSynthesisUtterance();
+
+let voices = [];
+window.speechSynthesis.onvoiceschanged = () => {
+  voices = window.speechSynthesis.getVoices();
+  speech.voice = voices[16];
+};
+
+document.querySelector("#speak").addEventListener("click", () => {
+    speech.text = currentQuestion.answer;
+    // speech.text = 'бежать';
+    window.speechSynthesis.speak(speech);
+  });
 

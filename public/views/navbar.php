@@ -10,11 +10,14 @@
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="/">Tester</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" aria-current="page" href="/views/dodaj.php">Dodawanie</a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="/views/todo.php">Todo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/views/lista.php">Lista</a>
             </li>
           </ul>
 
@@ -23,6 +26,8 @@
               <select class="form-select" id="languageinput" onchange="handleLanguageSelect(this)">
                 <option value="SP">Hiszpański</option>
                 <option value="DE">Niemiecki</option>
+                <option value="RU">Rosyjski</option>
+
               </select>
             </li>
 
