@@ -97,6 +97,10 @@ function start() {
 
     document.querySelector('#answerinput').focus();
 
+    if(settings.activelanguage != 'DE'){
+        document.querySelector('#collinsy').style.visibility = 'hidden';
+    }
+
 
 
 }
@@ -167,7 +171,7 @@ function handleLanguageSelect(event) {
 
 function saveSettings() {
     var senctencesselect = document.getElementById('senctencesselect');
-    var senctencesselectvalue = senctencesselect.options[partofspeechselect.selectedIndex].value;
+    var senctencesselectvalue = senctencesselect.options[senctencesselect.selectedIndex].value;
 
     settings.sentences = senctencesselectvalue;
     let cruddata = { tabela: 'settings', dane: settings }

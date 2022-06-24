@@ -117,55 +117,6 @@
       <div>
         <hr>
         <p id="messages"></p>
-
-        <div id="addform">
-          <p><b id="addheader">Dodaj słówko</b></p>
-          <div style="display:none" class="mb-2">
-              <label>Rodzajnik</label>
-              <select id="rodzajnikselect" onchange="handleRodzajnikSelect(this)">
-                  <option value="">Wybierz</option>
-                  <option value="der">der</option>
-                  <option value="die">die</option>
-                  <option value="das">das</option>
-              </select>
-          </div>
-          <div class="mb-2">
-              <label for>Pytanie (po polsku)</label>
-              <input type="text" id="questioninput">
-          </div>
-          <div class="mb-2">
-              <label for>Odpowiedź (po obcemu)</label>
-              <input type="text" id="crudanswerinput">
-          </div>
-          <div class="mb-2">
-              <label for="category">Część mowy:</label>
-              <select name="" id="partofspeechselect">
-                  <option value="nieprzypisane">nieprzypisane</option>
-                  <option value="rzeczownik">rzeczownik</option>
-                  <option value="czasownik">czasownik</option>
-                  <option value="przymiotnik">przymiotnik</option>
-                  <option value="przyimek">przyimek</option>
-                  <option value="zwroty">zwroty</option>
-              </select>
-          </div>
-          <div class="mb-2">
-              <label for="tags">Tag:</label>
-              <select name="" id="" v-model="chosentag">
-                  <option value="nieprzypisane">nieprzypisane</option>
-                  <option value="" v-for="tag in $root.tags" :value="tag.name">{{tag.name}}</option>
-              </select>
-          </div>
-          <div>
-              <label for="">Zdanie:</label>
-              <input type="checkbox" id="sentencecheckbox">
-          </div>
-
-          <button type="button" id="savebutton" class="btn btn-primary" onclick="add()">Dodaj</button>
-          <button type="button" id="updatebutton" class="btn btn-primary" style="display:none" onclick="updateQuestion()">Zapisz zmiany</button>
-        </div>
-
-
-
         
       </div>
       

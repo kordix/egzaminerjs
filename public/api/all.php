@@ -6,7 +6,7 @@ class dummy {
 }
 
 try{
-$sth = $dbh->prepare("SELECT * FROM questions q");
+$sth = $dbh->prepare("SELECT * FROM questions q order by id desc");
 }catch(Exception $e){
     echo $e->getMessage();
     return http_response_code(500);

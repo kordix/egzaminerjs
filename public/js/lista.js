@@ -48,7 +48,7 @@ function loadList() {
         let elem = words[i];
         document.querySelector('#tablebody').innerHTML += `<td>${elem.id}</td> 
         <td>${elem.question}</td> 
-        <td>${elem.answer}</td> 
+        <td class="answers">${elem.answer}  <i class="bi bi-volume-up" style="cursor:pointer" class="speak" onclick="speak(${i})"></i></td> 
         <td>${elem.counter}</td> 
         <td><button class="btn btn-danger" id="deletebutton${elem.id}" onclick="deleteTheQuestion(${elem.id})">Usuń</button></td>
         <td><button class="btn btn-warning" id="editbutton${elem.id}" onclick="editTheQuestion(${elem.id})">Edytuj</button></td>
@@ -142,4 +142,26 @@ function updateTheQuestion(id) {
 function handleLanguageSelect(event) {
     settings.activelanguage = event.value;
     saveSettings();
+}
+
+function toggleAnswers(){
+
+    Array.from(document.getElementsByClassName('answers')).forEach(element => {
+            element.classList.toggle('hide');
+    });
+}
+
+let speech = new SpeechSynthesisUtterance();
+
+let voices = [];
+window.speechSynthesis.onvoiceschanged = () => {
+  voices = window.speechSynthesis.getVoices();
+  speech.voice = voices[16];
+};
+
+
+function speak(i){
+    speech.text =  wordsall[i].answer;
+    window.speechSynthesis.speak(speech);
+
 }
