@@ -114,6 +114,9 @@
             </select>
         </div>
 
+        <label for="random">Random</label>
+        <input type="checkbox" onchange="settings.random = !settings.random;saveSettings()" id="randomcheck"></input>
+
       <div>
         <hr>
         <p id="messages"></p>
@@ -128,6 +131,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
   <script src="js/script.js"></script>
 
 </body>

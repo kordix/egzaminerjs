@@ -54,6 +54,11 @@ function getWords() {
         settings.sentences = '1';
     }
 
+    if(settings.random){
+        wordsall = _.shuffle(wordsall);
+    }
+
+
     wordsall = wordsall.filter((el) => el.language == settings.activelanguage);
 
     words = wordsall.filter((el) => el.sentence == settings.sentences);
@@ -99,6 +104,10 @@ function start() {
 
     if(settings.activelanguage != 'DE'){
         document.querySelector('#collinsy').style.visibility = 'hidden';
+    }
+
+    if(settings.random == 1){
+        document.querySelector('#randomcheck').checked = true;
     }
 
 
