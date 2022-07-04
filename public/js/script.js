@@ -179,6 +179,11 @@ function handleLanguageSelect(event) {
 }
 
 function saveSettings() {
+    if (settings.random){
+        settings.random = 1
+    }else{
+        settings.random = 0
+    }
     var senctencesselect = document.getElementById('senctencesselect');
     var senctencesselectvalue = senctencesselect.options[senctencesselect.selectedIndex].value;
 

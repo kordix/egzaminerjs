@@ -21,14 +21,22 @@ foreach($dane->dane as $key => $value)
 
 $kwerenda = substr($kwerenda, 0, -1);
 $query = "UPDATE settings SET $kwerenda WHERE id=1";
-echo $query;
-
 $sth = $dbh->prepare($query);
 
-//replace
 if($sth->execute() ==false ){
-      echo 'nie udało się';
-    }
+  echo 'nie udało się';
+}
+
+
+$query = "UPDATE settings SET random  = $dane->random";
+$sth = $dbh->prepare($query);
+
+if($sth->execute() ==false ){
+  echo 'nie udało się';
+}
+
+//replace
+
 ?>
 
 
