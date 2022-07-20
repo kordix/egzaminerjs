@@ -108,7 +108,7 @@
 
         <div class="mb-2">
           <label for="tryb">Tryb</label>
-          <select name="" id="tryb">
+          <select name="" id="trybselect">
               <option value="POLDE">Polski - obcy</option>
               <option value="DEPOL">Obcy - polski</option>
             </select>

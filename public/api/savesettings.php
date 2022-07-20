@@ -11,28 +11,31 @@ $tabela = $dane->tabela;
 
 $kwerenda='';
 
-foreach($dane->dane as $key => $value)
-{
-  $kwerenda .= $key;
-  $kwerenda .= '=';
-  $kwerenda .= "'".$value."'";
-  $kwerenda .= ',';
+if ($dane->random == '') {
+    $dane->random = 0;
+}
+
+foreach ($dane->dane as $key => $value) {
+    $kwerenda .= $key;
+    $kwerenda .= '=';
+    $kwerenda .= "'".$value."'";
+    $kwerenda .= ',';
 }
 
 $kwerenda = substr($kwerenda, 0, -1);
 $query = "UPDATE settings SET $kwerenda WHERE id=1";
 $sth = $dbh->prepare($query);
 
-if($sth->execute() ==false ){
-  echo 'nie udało się';
+if ($sth->execute() ==false) {
+    echo 'nie udało się';
 }
 
 
 $query = "UPDATE settings SET random  = $dane->random";
 $sth = $dbh->prepare($query);
 
-if($sth->execute() ==false ){
-  echo 'nie udało się';
+if ($sth->execute() ==false) {
+    echo 'nie udało się';
 }
 
 //replace

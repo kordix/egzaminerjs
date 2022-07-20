@@ -97,7 +97,7 @@ function start() {
     }
 
     if (settings.tryb == 'DEPOL') {
-        document.getElementById('tryb').selectedIndex = 1;
+        document.getElementById('trybselect').selectedIndex = 1;
     }
 
     document.querySelector('#answerinput').focus();
@@ -186,8 +186,12 @@ function saveSettings() {
     }
     var senctencesselect = document.getElementById('senctencesselect');
     var senctencesselectvalue = senctencesselect.options[senctencesselect.selectedIndex].value;
-
     settings.sentences = senctencesselectvalue;
+
+    var trybselect = document.getElementById('trybselect');
+    var trybselectvalue = trybselect.options[trybselect.selectedIndex].value;
+    settings.tryb = trybselectvalue;
+
     let cruddata = { tabela: 'settings', dane: settings }
     fetch('/api/savesettings.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
     location.reload()
