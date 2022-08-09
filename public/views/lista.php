@@ -8,14 +8,14 @@
     <title>Lista słówek</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/mybootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
 
-        <style>
-            .hide{
-                visibility:hidden;
-            }
-        </style>
+    <style>
+        .hide{
+            visibility:hidden;
+        }
+    </style>
 </head>
 
 <body>
@@ -96,6 +96,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <script src="../js/lista.js"></script>
+    <script src="../js/mybootstrap.js"></script>
+
 </body>
 
 </html>

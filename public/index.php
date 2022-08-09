@@ -20,19 +20,8 @@
   <title>Egzaminer js</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-  <link rel="stylesheet" href="style.css">
-
-  <style>
-    #wyloguj {
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" href="css/mybootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -42,7 +31,6 @@
   <div class="container mt-4">
       <p><b>Przetłumacz:</b> <span id="currentquestionquestion"></span>  <i class="bi bi-volume-up" style="cursor:pointer" id="speak"></i></p>
       <p>Counter:  <span id="currentquestioncounter"></span>  <span  style="font-size:8px">id: <span id="currentquestionid"></span> </span></p>
-      <!-- <label for="answer">Odpowiedź:</label> -->
      
       <p id="komunikaty"> &nbsp</p>
       <div>
@@ -66,9 +54,9 @@
           <button id="deletebutton" type="button" class="btn btn-danger" style="margin-left:20px" onclick="deleteQuestion()">Usuń</button>
         </div>
 
-        <div style="display:flex;align-items:center" id="collinsy" v-if="ready">
+        <div style="display:flex;align-items:center;" id="collinsy" v-if="ready">
           <a href="'" id="collinslink" target="_blank">
-            <div style="background-color:#333;width:100px;height:40px;margin:.3em;padding:5px" class="icon">
+            <div style="background-color:#333;width:100px;height:30px;margin:.3em;padding:8px" class="icon">
               <img src="https://www.collinsdictionary.com/external/images/logo.png?version=4.0.35" class="img-fluid"/>
             </div>
           </a>
@@ -80,7 +68,7 @@
           </a>
 
           <a :href="'https://pl.wiktionary.org/wiki/'+currentQuestion.answer" id="bablalink"  target="_blank">
-            <div style="background:#333399;width:100px;height:40px;padding:5px" class="icon">
+            <div style="background:#333399;width:100px;height:30px;padding:8px" class="icon">
               <img src="https://static.bab.la/img/babla-logo-white.svg" class="img-fluid" alt />
             </div>
           </a>
@@ -92,7 +80,7 @@
               <option value="<"> < </option>
               <option value=">"> > </option>
             </select>
-            <input style="width:50px" type="number" id="counterinput">
+            <input style="width:40px" type="number" id="counterinput">
             <button type="button" name="button" onclick="saveCounterset()">Ustaw</button>
 
           
@@ -128,8 +116,8 @@
     </div>
 
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  
+
+  <script src="js/mybootstrap.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
   <script src="js/script.js"></script>

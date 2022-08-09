@@ -165,3 +165,7 @@ function speak(i){
     window.speechSynthesis.speak(speech);
 
 }
+
+
+
+document.querySelector('body').innerHTML += window.location.href;

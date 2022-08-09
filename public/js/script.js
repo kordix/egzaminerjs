@@ -49,6 +49,12 @@ async function loadData() {
 
 }
 
+loadData().then((res) => {
+    getWords();
+    start();
+    document.getElementById('languageinput').value = settings.activelanguage;
+});
+
 function getWords() {
     if (settings.sentences == 1) {
         settings.sentences = '1';
@@ -102,8 +108,12 @@ function start() {
 
     document.querySelector('#answerinput').focus();
 
-    if(settings.activelanguage != 'DE'){
-        document.querySelector('#collinsy').style.visibility = 'hidden';
+    if(settings.activelanguage == 'RU'){
+       document.querySelector('#collinslink').style.display = 'none';
+    }
+
+    if(settings.activelanguage == 'SP'){
+        document.querySelector('#collinsy').style.display = 'none';
     }
 
     if(settings.random == 1){
@@ -128,11 +138,22 @@ function runWord() {
     if (settings.tryb == 'DEPOL') {
         document.getElementById('currentquestionquestion').innerHTML = currentQuestion.answer;
     }
+
+    let bablastring = '';
+
+    if(settings.activelanguage == 'RU'){
+        bablastring = 'rosyjski';
+    }
+
+    if(settings.activelanguage == 'DE'){
+        bablastring = 'niemiecki';
+    }
+
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
-    document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer.split(' / ')[0]}`;
-    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer.split(' / ')[0]}`;
-    document.getElementById('bablalink').href = `https://pl.bab.la/slownik/niemiecki-polski/${currentQuestion.answer.split(' / ')[0]}`;
+    document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer.split(' / ')[0].toLowerCase()}`;
+    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer.split(' / ')[0].toLowerCase() }`;
+    document.getElementById('bablalink').href = `https://pl.bab.la/slownik/${bablastring}-polski/${currentQuestion.answer.split(' / ')[0].toLowerCase()}`;
 
 
 
@@ -333,13 +354,7 @@ function handleRodzajnikSelect(event) {
 
 
 
-loadData().then((res) => {
-    getWords();
-    start();
-    document.getElementById('languageinput').value = settings.activelanguage;
 
-
-});
 
 if (document.querySelector('#answerinput')) {
     document.querySelector('#answerinput').addEventListener('keypress', function (e) {
@@ -364,4 +379,5 @@ document.querySelector("#speak").addEventListener("click", () => {
     // speech.text = 'бежать';
     window.speechSynthesis.speak(speech);
   });
+
 

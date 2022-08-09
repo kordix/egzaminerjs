@@ -1,0 +1,8 @@
+.icon{
+    opacity:0.8;
+    transition:.3;
+}
+
+.icon:hover{
+    opacity:1
+}
