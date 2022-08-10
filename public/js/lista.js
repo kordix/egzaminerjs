@@ -1,8 +1,12 @@
 let settings = {};
 let wordsall = [];
 let words = [];
+let filtered = [];
 let crudadd = {};
 let editedid = 0;
+let sortKey = '';
+let newSortKey = '';
+let order = 1;
 
 
 
@@ -44,8 +48,11 @@ function getWords() {
 }
 
 function loadList() {
-    for (let i = 0; i < words.length; i++) {
-        let elem = words[i];
+    filtruj();
+    document.querySelector('#tablebody').innerHTML = '';
+    for (let i = 0; i < filtered.length; i++) {
+        let elem = filtered[i];
+    
         document.querySelector('#tablebody').innerHTML += `<td>${elem.id}</td> 
         <td>${elem.question}</td> 
         <td class="answers">${elem.answer}  <i class="bi bi-volume-up" style="cursor:pointer" class="speak" onclick="speak(${i})"></i></td> 
@@ -54,14 +61,62 @@ function loadList() {
         <td><button class="btn btn-warning" id="editbutton${elem.id}" onclick="editTheQuestion(${elem.id})">Edytuj</button></td>
         `
     }
-
-    const dataTable = new simpleDatatables.DataTable("#myTable", {
-        searchable: true,
-        fixedHeight: true,
-        perPage: 1000,
-        paging: false
-    })
 }
+
+function filtruj(){
+    let self = this;
+    var filterkeydump = document.querySelector('#search').value;
+    var filterKey = filterkeydump && filterkeydump.toLowerCase()
+    var heroes = words;
+    filtered = words;
+
+    if (filterKey) {
+        heroes = heroes.filter(function(row) {
+            return Object.keys(row).some(function(key) {
+                return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+            })
+        })
+     
+    }
+    if (sortKey) {
+        heroes = heroes.slice().sort(function(a, b) {
+            a = a[sortKey].toLowerCase()
+            b = b[sortKey].toLowerCase()
+            return (a === b ? 0 : a > b ? 1 : -1) * order
+        })
+    }
+
+    filtered = heroes;
+    newSortKey = sortKey;
+
+}
+
+function sortuj(sortkey){
+    if (newSortKey == sortKey){
+        order = !order;
+    }
+
+    if(newSortKey == ''){
+        order = 1;
+    }
+
+    event.target.parentNode.classList = [];
+    if(order == 1){
+        event.target.parentNode.classList.add('asc')
+    }
+    if(order == 0){
+        event.target.parentNode.classList.add('desc')
+    }
+
+
+    sortKey = sortkey;
+    loadList();
+
+}
+
+
+
+
 
 function deleteTheQuestion(id) {
     let cruddata = { tabela: 'questions', id: id}
@@ -165,7 +220,3 @@ function speak(i){
     window.speechSynthesis.speak(speech);
 
 }
-
-
-
-document.querySelector('body').innerHTML += window.location.href;

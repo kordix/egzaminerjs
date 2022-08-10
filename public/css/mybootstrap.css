@@ -368,3 +368,48 @@ button{
         max-width: 1320px
     }
 }
+
+table{
+    text-align:left;
+    width: 100%;
+}
+
+.dataTable-sorter{
+    width:100%;
+    position:relative;
+    display: inline-block;
+    cursor:pointer;
+}
+
+.dataTable-sorter::before, .dataTable-sorter::after {
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    right: 4px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    opacity: 0.2;
+}
+
+.dataTable-sorter::before {
+    border-top: 4px solid #000;
+    bottom: 0px;
+}
+
+.dataTable-sorter::after {
+    border-bottom: 4px solid #000;
+    border-top: 4px solid transparent;
+    top: 0px;
+}
+
+table > thead > tr > th {
+    vertical-align: top;
+    /* padding: 0px 10px; */
+    padding:10px 10px 10px 0px;
+}
+
+.asc .dataTable-sorter::after,
+.desc .dataTable-sorter::before {
+	opacity: 0.6;
+}

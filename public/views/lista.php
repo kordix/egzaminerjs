@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista słówek</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/mybootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -69,17 +69,23 @@
         <button type="button" id="savebutton" class="btn btn-primary" onclick="add()">Dodaj</button>
         <button type="button" id="updatebutton" class="btn btn-primary" style="display:none" onclick="updateTheQuestion()">Zapisz zmiany</button>
         </div>
-
-        <div style="position:relative">
-          <button style="position:absolute;top:20px;right:300px" onclick="toggleAnswers()">Ukryj tłumaczenia</button>
+        <br>
+        <input value="" type="text" id="search" placeholder="szukaj..." autocomplete="off" oninput="loadList()">
+        <br>
+        <div style="position:relative;display:flex;justify-content:flex-end;width:50%">
+          <button style="margin-left:auto" onclick="toggleAnswers()">Ukryj tłumaczenia</button>
         </div>
         <table id="myTable" class="table">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>Pytanie</th>
-                    <th>Tłumaczenie</th>
-                    <th>Counter</th>
+                    <th>
+                        <a class="dataTable-sorter">id</a>
+                    </th>
+                    <th>
+                        <a class="dataTable-sorter" onclick="sortuj('question')">Pytanie</a>
+                    </th>
+                    <th><a class="dataTable-sorter" onclick="sortuj('answer')">Tłumaczenie</a></th>
+                    <th><a class="dataTable-sorter">Counter</a></th>
                     <th>Usuń</th>
                     <th>Edytuj</th>
                 </tr>
@@ -94,7 +100,7 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script> -->
     <script src="../js/lista.js"></script>
     <script src="../js/mybootstrap.js"></script>
 
