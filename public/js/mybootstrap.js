@@ -8,3 +8,14 @@ document.querySelector('#hamburger').addEventListener('click', function(){
     document.querySelector('.navbar-collapse').classList.toggle('show');    
 
 })
+
+function showToast(){
+    document.querySelector('#liveToast').classList.remove('hide');
+    setTimeout(()=>{ hideToast()},5000);
+    // document.querySelector('#liveToast').style.opacity = 1;
+}
+
+function hideToast(){
+    document.querySelector('#liveToast').classList.add('hide');
+    // document.querySelector('#liveToast').style.opacity = 0;
+}

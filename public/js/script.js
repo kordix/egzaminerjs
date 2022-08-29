@@ -53,7 +53,15 @@ loadData().then((res) => {
     getWords();
     start();
     document.getElementById('languageinput').value = settings.activelanguage;
+
+    if (sessionStorage.getItem('toast')){
+        showToast();
+        sessionStorage.removeItem('toast'); 
+    }
+
 });
+
+
 
 function getWords() {
     if (settings.sentences == 1) {
@@ -215,6 +223,7 @@ function saveSettings() {
 
     let cruddata = { tabela: 'settings', dane: settings }
     fetch('/api/savesettings.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
+    sessionStorage.setItem('toast',1);
    location.reload()
 }
 

@@ -6,7 +6,7 @@
 // }
 
 // if($_SESSION['zalogowany']){
-    
+
 // }
 ?>
 
@@ -110,6 +110,18 @@
         <p id="messages"></p>
         
       </div>
+
+        <div id="liveToast" class="toast hide">
+          <div class="toast-header">
+          <div class="toast-point"></div>
+            <strong class="me-auto">Info</strong>
+            <!-- <small>11 mins ago</small> -->
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="hideToast()"></button>
+          </div>
+          <div class="toast-body">
+            Zapisano ustawienia
+          </div>
+        </div>
       
           <!-- <p style="margin-right:20px">Random: <input type="checkbox" v-model="randomset"></p> -->
 
