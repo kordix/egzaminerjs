@@ -6,13 +6,18 @@ require_once('db.php');
 //replace
 $dane = json_decode(file_get_contents('php://input'));
 
+
+print_r($dane->dane);
+
 $tabela = $dane->tabela;
 //$id = $dane->id;
 
 $kwerenda='';
 
-if ($dane->random == '') {
-    $dane->random = 0;
+$random = $dane->dane->random;
+
+if ($random == '') {
+    $random= 0;
 }
 
 foreach ($dane->dane as $key => $value) {
@@ -24,6 +29,8 @@ foreach ($dane->dane as $key => $value) {
 
 $kwerenda = substr($kwerenda, 0, -1);
 $query = "UPDATE settings SET $kwerenda WHERE id=1";
+echo $query;
+
 $sth = $dbh->prepare($query);
 
 if ($sth->execute() ==false) {
@@ -31,7 +38,9 @@ if ($sth->execute() ==false) {
 }
 
 
-$query = "UPDATE settings SET random  = $dane->random";
+$query = "UPDATE settings SET random  = $random WHERE id=1";
+
+echo $query;
 $sth = $dbh->prepare($query);
 
 if ($sth->execute() ==false) {

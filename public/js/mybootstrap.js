@@ -4,5 +4,7 @@ document.querySelector('#navbarDropdownMenuLink').addEventListener('click', func
 
 document.querySelector('.navbar-nav').querySelector(`a[href="${window.location.pathname}"]`).classList.add('active');
 
-console.log(document.querySelector(`a[href="${window.location.pathname}"]`));
+document.querySelector('#hamburger').addEventListener('click', function(){
+    document.querySelector('.navbar-collapse').classList.toggle('show');    
 
+})
