@@ -215,7 +215,7 @@ function saveSettings() {
 
     let cruddata = { tabela: 'settings', dane: settings }
     fetch('/api/savesettings.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
-   // location.reload()
+   location.reload()
 }
 
 function handleAnswer(event) {
