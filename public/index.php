@@ -103,7 +103,7 @@
         </div>
 
         <label for="random">Random</label>
-        <input type="checkbox" onchange="settings.random = !settings.random" id="randomcheck"></input>
+        <input type="checkbox" onchange="settings.random = !settings.random;saveSettings()" id="randomcheck"></input>
 
       <div>
         <hr>
