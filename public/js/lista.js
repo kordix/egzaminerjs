@@ -14,7 +14,9 @@ let order = 1;
 async function loadData() {
     let self = this;
     await fetch('/api/settings.php', { method: 'POST', body: JSON.stringify({ tabela: 'settings' }) }).then(res => res.json()).then((res) => settings = res[0])
-    await fetch('/api/all.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions' }) }).then(res => res.json()).then((res) => wordsall = res)
+    await fetch('/api/all.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions' }) }).then(res => res.json()).then((res) => wordsall = res);
+
+
 }
 
 loadData().then((res) => {
@@ -27,6 +29,10 @@ loadData().then((res) => {
 function getWords() {
     if (settings.sentences == 1) {
         settings.sentences = '1';
+    }
+
+    if (settings.sentences === '1') {
+        document.querySelector('#sentencecheckbox').checked = true;
     }
 
     wordsall = wordsall.filter((el) => el.language == settings.activelanguage);
@@ -52,7 +58,7 @@ function loadList() {
     document.querySelector('#tablebody').innerHTML = '';
     for (let i = 0; i < filtered.length; i++) {
         let elem = filtered[i];
-    
+
         document.querySelector('#tablebody').innerHTML += `<td>${elem.id}</td> 
         <td>${elem.question}</td> 
         <td class="answers">${elem.answer}  <i class="bi bi-volume-up" style="cursor:pointer" class="speak" onclick="speak(${i})"></i></td> 
@@ -63,7 +69,7 @@ function loadList() {
     }
 }
 
-function filtruj(){
+function filtruj() {
     let self = this;
     var filterkeydump = document.querySelector('#search').value;
     var filterKey = filterkeydump && filterkeydump.toLowerCase()
@@ -71,15 +77,15 @@ function filtruj(){
     filtered = words;
 
     if (filterKey) {
-        heroes = heroes.filter(function(row) {
-            return Object.keys(row).some(function(key) {
+        heroes = heroes.filter(function (row) {
+            return Object.keys(row).some(function (key) {
                 return String(row[key]).toLowerCase().indexOf(filterKey) > -1
             })
         })
-     
+
     }
     if (sortKey) {
-        heroes = heroes.slice().sort(function(a, b) {
+        heroes = heroes.slice().sort(function (a, b) {
             a = a[sortKey].toLowerCase()
             b = b[sortKey].toLowerCase()
             return (a === b ? 0 : a > b ? 1 : -1) * order
@@ -91,20 +97,20 @@ function filtruj(){
 
 }
 
-function sortuj(sortkey){
-    if (newSortKey == sortKey){
+function sortuj(sortkey) {
+    if (newSortKey == sortKey) {
         order = !order;
     }
 
-    if(newSortKey == ''){
+    if (newSortKey == '') {
         order = 1;
     }
 
     event.target.parentNode.classList = [];
-    if(order == 1){
+    if (order == 1) {
         event.target.parentNode.classList.add('asc')
     }
-    if(order == 0){
+    if (order == 0) {
         event.target.parentNode.classList.add('desc')
     }
 
@@ -119,7 +125,7 @@ function sortuj(sortkey){
 
 
 function deleteTheQuestion(id) {
-    let cruddata = { tabela: 'questions', id: id}
+    let cruddata = { tabela: 'questions', id: id }
     fetch('/api/delete.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
     location.reload();
 }
@@ -132,7 +138,7 @@ function handleRodzajnikSelect(event) {
 function add() {
     document.querySelector('#updatebutton').style.display = 'none';
     document.querySelector('#savebutton').style.display = 'inline-block';
-    
+
     var partofspeechselect = document.getElementById('partofspeechselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
@@ -142,7 +148,7 @@ function add() {
     }
 
     let crudadd = {
-        language:settings.activelanguage,
+        language: settings.activelanguage,
         sentence: sentence,
         question: document.getElementById('questioninput').value,
         answer: document.getElementById('crudanswerinput').value,
@@ -151,14 +157,14 @@ function add() {
         partofspeech: partofspeechselectvalue
     }
 
-    fetch('/api/add.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions', dane: crudadd }) })
-    //.then((res) => location.reload())
+    fetch('/api/add.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions', dane: crudadd }) }).then((res) => location.reload())
+    
     document.getElementById('messages').innerHTML = `Dodano pytanie ${crudadd.question}`;
 
 }
 
 function editTheQuestion(id) {
-    let elem = words.find(el=>el.id == id);
+    let elem = words.find(el => el.id == id);
 
     document.querySelector('#questioninput').value = elem.question;
     document.querySelector('#crudanswerinput').value = elem.answer;
@@ -172,7 +178,7 @@ function editTheQuestion(id) {
 }
 
 function updateTheQuestion(id) {
-    let elem = words.find(el=>el.id == id);
+    let elem = words.find(el => el.id == id);
     var partofspeechselect = document.getElementById('partofspeechselect');
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
@@ -200,10 +206,10 @@ function handleLanguageSelect(event) {
     saveSettings();
 }
 
-function toggleAnswers(){
+function toggleAnswers() {
 
     Array.from(document.getElementsByClassName('answers')).forEach(element => {
-            element.classList.toggle('hide');
+        element.classList.toggle('hide');
     });
 }
 
@@ -211,13 +217,13 @@ let speech = new SpeechSynthesisUtterance();
 
 let voices = [];
 window.speechSynthesis.onvoiceschanged = () => {
-  voices = window.speechSynthesis.getVoices();
-  speech.voice = voices[16];
+    voices = window.speechSynthesis.getVoices();
+    speech.voice = voices[16];
 };
 
 
-function speak(i){
-    speech.text =  wordsall[i].answer;
+function speak(i) {
+    speech.text = wordsall[i].answer;
     window.speechSynthesis.speak(speech);
 
 }
