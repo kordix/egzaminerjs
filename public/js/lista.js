@@ -137,7 +137,7 @@ function add() {
     var partofspeechselectvalue = partofspeechselect.options[partofspeechselect.selectedIndex].value;
 
     let sentence = 0;
-    if (parseInt(document.getElementById('sentencecheckbox').checked == 1)) {
+    if (document.getElementById('sentencecheckbox').checked) {
         sentence = 1;
     }
 
