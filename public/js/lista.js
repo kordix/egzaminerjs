@@ -151,7 +151,8 @@ function add() {
         partofspeech: partofspeechselectvalue
     }
 
-    fetch('/api/add.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions', dane: crudadd }) }).then((res) => location.reload())
+    fetch('/api/add.php', { method: 'POST', body: JSON.stringify({ tabela: 'questions', dane: crudadd }) })
+    //.then((res) => location.reload())
     document.getElementById('messages').innerHTML = `Dodano pytanie ${crudadd.question}`;
 
 }
