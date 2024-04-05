@@ -61,7 +61,7 @@ function loadList() {
 
         document.querySelector('#tablebody').innerHTML += `<td>${elem.id}</td> 
         <td>${elem.question}</td> 
-        <td class="answers">${elem.answer}  <i class="bi bi-volume-up" style="cursor:pointer" class="speak" onclick="speak(${i})"></i></td> 
+        <td class="answers">${elem.answer}  <i class="bi bi-volume-up" style="cursor:pointer" class="speak" onclick="speak(${elem.id})"></i></td> 
         <td>${elem.counter}</td> 
         <td><button class="btn btn-danger" id="deletebutton${elem.id}" onclick="deleteTheQuestion(${elem.id})">Usuń</button></td>
         <td><button class="btn btn-warning" id="editbutton${elem.id}" onclick="editTheQuestion(${elem.id})">Edytuj</button></td>
@@ -222,8 +222,8 @@ window.speechSynthesis.onvoiceschanged = () => {
 };
 
 
-function speak(i) {
-    speech.text = wordsall[i].answer;
+function speak(id) {
+    speech.text = wordsall.find((el)=>el.id == id).answer;
     window.speechSynthesis.speak(speech);
 
 }
