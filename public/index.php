@@ -96,7 +96,7 @@
 
         <div class="mb-2">
           <label for="tryb">Tryb</label>
-          <select name="" id="trybselect">
+          <select name="" id="trybselect" onchange="saveSettings()"> 
               <option value="POLDE">Polski - obcy</option>
               <option value="DEPOL">Obcy - polski</option>
             </select>
