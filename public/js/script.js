@@ -151,6 +151,8 @@ function runWord() {
     let i = 1
     while (i < settings.streak) {
         currentQuestion.answer += ' ' + words[currentQuestionIndex + i].answer;
+        currentQuestion.question += ' ' + words[currentQuestionIndex + i].question;
+
         i++;
     }
 
