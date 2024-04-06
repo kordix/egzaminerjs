@@ -14,10 +14,12 @@ let settings = {
     sentences: 0,
     activelanguage: 'DE',
     currentcategory: 'wszystkie',
-    counterset: 5
+    counterset: 5,
+    streak:2
 }
 
 let siemano = 'fdsfdasdafsd';
+
 
 String.prototype.escapeDiacritics = function () {
     return this.replace(/ą/g, 'a').replace(/Ą/g, 'A')
@@ -40,9 +42,6 @@ String.prototype.escapeDiacritics = function () {
 
 async function loadData() {
     let self = this;
-    // await axios.post("/api/read.php", { tabela: 'tags' }).then((res) => (tags = res.data));
-    //  await axios.post("/api/read.php", { tabela: 'settings', id:1 }).then((res) =>{settings = res.data[0]; });
-    // await axios.post('/api/all.php', { tabela: 'questions' }).then((res) => { wordsall = res.data });
 
     await fetch('/api/settings.php', { method: 'POST', body: JSON.stringify({ tabela: 'settings' }) }).then(res => res.json()).then((res) => settings = res[0])
     await fetch('/api/all.php', { method: 'POST', bfody: JSON.stringify({ tabela: 'questions' }) }).then(res => res.json()).then((res) => wordsall = res)
@@ -102,6 +101,7 @@ function start() {
         currentQuestionIndex = 0;
     }
 
+  
     runWord();
 
     document.getElementById('counterinput').value = settings.counterset;
@@ -148,6 +148,12 @@ function runWord() {
         return;
     }
 
+    let i = 1
+    while (i <= settings.streak) {
+        currentQuestion.answer += ' ' + words[currentQuestionIndex + i].answer;
+        i++;
+    }
+
     if (settings.tryb == 'POLDE') {
         document.getElementById('currentquestionquestion').innerHTML = currentQuestion.question;
     }
@@ -171,6 +177,8 @@ function runWord() {
         bablastring = 'niemiecki';
     }
 
+    
+
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
     document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer.split(' / ')[0].toLowerCase()}`;
@@ -184,7 +192,7 @@ function runWord() {
 
 function next() {
     document.getElementById('answerinput').value = '';
-    currentQuestionIndex++;
+    currentQuestionIndex += settings.streak;
     if (currentQuestionIndex >= words.length) {
         location.reload();
         currentQuestionIndex = 0;

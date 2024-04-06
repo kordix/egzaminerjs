@@ -106,6 +106,9 @@
 
         <label for="random">Random</label>
         <input type="checkbox" onchange="settings.random = !settings.random;saveSettings()" id="randomcheck"></input>
+        <br>
+        <label for="streak">Streak</label>
+        <input type="number" id="streakinput" style="width:50px">
 
       <div>
         <hr>
