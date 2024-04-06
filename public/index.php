@@ -99,6 +99,8 @@
           <select name="" id="trybselect" onchange="saveSettings()"> 
               <option value="POLDE">Polski - obcy</option>
               <option value="DEPOL">Obcy - polski</option>
+              <option value="DEPOLHEAR">Obcy - polski - słuch</option>
+
             </select>
         </div>
 

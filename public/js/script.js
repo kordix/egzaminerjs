@@ -54,9 +54,9 @@ loadData().then((res) => {
     start();
     document.getElementById('languageinput').value = settings.activelanguage;
 
-    if (sessionStorage.getItem('toast')){
+    if (sessionStorage.getItem('toast')) {
         showToast();
-        sessionStorage.removeItem('toast'); 
+        sessionStorage.removeItem('toast');
     }
 
 });
@@ -68,7 +68,7 @@ function getWords() {
         settings.sentences = '1';
     }
 
-    if(settings.random){
+    if (settings.random) {
         wordsall = _.shuffle(wordsall);
     }
 
@@ -114,17 +114,21 @@ function start() {
         document.getElementById('trybselect').selectedIndex = 1;
     }
 
-    document.querySelector('#answerinput').focus();
-
-    if(settings.activelanguage == 'RU'){
-       document.querySelector('#collinslink').style.display = 'none';
+    if (settings.tryb == 'DEPOLHEAR') {
+        document.getElementById('trybselect').selectedIndex = 2;
     }
 
-    if(settings.activelanguage == 'SP'){
+    document.querySelector('#answerinput').focus();
+
+    if (settings.activelanguage == 'RU') {
+        document.querySelector('#collinslink').style.display = 'none';
+    }
+
+    if (settings.activelanguage == 'SP') {
         document.querySelector('#collinsy').style.display = 'none';
     }
 
-    if(settings.random == 1){
+    if (settings.random == 1) {
         document.querySelector('#randomcheck').checked = true;
     }
 
@@ -132,10 +136,15 @@ function start() {
 
 }
 
+function showAnswer() {
+    document.getElementById('currentquestionquestion').innerHTML = currentQuestion.answer;
+
+}
+
 function runWord() {
     if (document.getElementById('komunikaty')) {
         document.getElementById('komunikaty').innerHTML = '&nbsp';
-    }else{
+    } else {
         return;
     }
 
@@ -147,20 +156,25 @@ function runWord() {
         document.getElementById('currentquestionquestion').innerHTML = currentQuestion.answer;
     }
 
+    if (settings.tryb == 'DEPOLHEAR') {
+        document.getElementById('currentquestionquestion').innerHTML = `<button onclick="showAnswer()">Pokaż</button>`;
+    }
+
+
     let bablastring = '';
 
-    if(settings.activelanguage == 'RU'){
+    if (settings.activelanguage == 'RU') {
         bablastring = 'rosyjski';
     }
 
-    if(settings.activelanguage == 'DE'){
+    if (settings.activelanguage == 'DE') {
         bablastring = 'niemiecki';
     }
 
     document.getElementById('currentquestioncounter').innerHTML = currentQuestion.counter;
     document.getElementById('currentquestionid').innerHTML = currentQuestion.id;
     document.getElementById('collinslink').href = `https://www.collinsdictionary.com/dictionary/german-english/${currentQuestion.answer.split(' / ')[0].toLowerCase()}`;
-    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer.split(' / ')[0].toLowerCase() }`;
+    document.getElementById('wiktionarylink').href = `https://pl.wiktionary.org/wiki/${currentQuestion.answer.split(' / ')[0].toLowerCase()}`;
     document.getElementById('bablalink').href = `https://pl.bab.la/slownik/${bablastring}-polski/${currentQuestion.answer.split(' / ')[0].toLowerCase()}`;
 
 
@@ -208,9 +222,9 @@ function handleLanguageSelect(event) {
 }
 
 function saveSettings() {
-    if (settings.random){
+    if (settings.random) {
         settings.random = 1
-    }else{
+    } else {
         settings.random = 0
     }
     var senctencesselect = document.getElementById('senctencesselect');
@@ -223,15 +237,15 @@ function saveSettings() {
 
     let cruddata = { tabela: 'settings', dane: settings }
     fetch('/api/savesettings.php', { method: 'POST', body: JSON.stringify(cruddata) }).then((res) => console.log(res))
-    sessionStorage.setItem('toast',1);
-   location.reload()
+    sessionStorage.setItem('toast', 1);
+    location.reload()
 }
 
 function handleAnswer(event) {
 
     answer = document.getElementById('answerinput').value;
     let answers = currentQuestion.answer.split(' / ');
-    if (settings.tryb == 'DEPOL') {
+    if (settings.tryb == 'DEPOL' || settings.tryb == 'DEPOLHEAR') {
         answers = currentQuestion.question.split(' / ');
     }
     let passed = 0;
@@ -259,7 +273,7 @@ function handleAnswer(event) {
 
 function answerPositive() {
     document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b> - prawidłowa odpowiedź!`;
-    if (settings.tryb == 'DEPOL') {
+    if (settings.tryb == 'DEPOL' || settings.tryb == 'DEPOLHEAR') {
         document.getElementById('komunikaty').innerHTML = `<b>${currentQuestion.rodzajnik} ${currentQuestion.question}</b> - prawidłowa odpowiedź!`;
     }
 
@@ -291,7 +305,7 @@ function answerNegative() {
         document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.rodzajnik} ${currentQuestion.answer}</b>`;
     }
 
-    if (settings.tryb == 'DEPOL') {
+    if (settings.tryb == 'DEPOL' || settings.tryb == 'DEPOLHEAR') {
         document.getElementById('komunikaty').innerHTML = `ŹLE! PRAWIDŁOWA ODPOWIEDŹ - <b>${currentQuestion.rodzajnik} ${currentQuestion.question}</b>`;
     }
 }
@@ -307,7 +321,7 @@ function add() {
     }
 
     let crudadd = {
-        language:settings.activelanguage,
+        language: settings.activelanguage,
         sentence: sentence,
         question: document.getElementById('questioninput').value,
         answer: document.getElementById('crudanswerinput').value,
@@ -379,14 +393,14 @@ let speech = new SpeechSynthesisUtterance();
 
 let voices = [];
 window.speechSynthesis.onvoiceschanged = () => {
-  voices = window.speechSynthesis.getVoices();
-  speech.voice = voices[16];
+    voices = window.speechSynthesis.getVoices();
+    speech.voice = voices[16];
 };
 
 document.querySelector("#speak").addEventListener("click", () => {
     speech.text = currentQuestion.answer;
     // speech.text = 'бежать';
     window.speechSynthesis.speak(speech);
-  });
+});
 
 
